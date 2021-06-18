@@ -42,9 +42,9 @@
 		</nav>
 		<!-- 每日练习go部分 -->
 		<div class="go">
-            <a href="#">
-                <img src="images/go.png" alt="" />
-            </a>
+			<a href="#">
+				<img src="images/go.png" alt="" />
+			</a>
 		</div>
 		<!-- 我是分割线。。。 -->
 		<div class="split-div"></div>
@@ -182,52 +182,207 @@
 			})()
 		</script>
 		<script>
+			var ua = window.navigator.userAgent.toLowerCase()
+			var iswx = ua.match(/MicroMessenger/i) == 'micromessenger'
 			var allA = document.getElementsByTagName('a')
 			for (i = 0; i < allA.length; i++) {
 				allA[i].addEventListener('click', function () {
-					var flag = true;
-                    var count = 1;
-                    var anwser;
+					var flag = true
+					var count = 1
+					var anwser
 					while (flag) {
-                        if (count === 1) {
-                            anwser = prompt('小余是不是最可爱的？');
-                        } else if (count === 2) {
-                            anwser = prompt('再问一遍，小余是不是最可爱的？');
-                        } else {
-                            anwser = prompt('最后问一遍，小余是不是最可爱的？');
-                        }
-						switch (anwser) {
-                            case null:
-                                flag = false;
-                                break;
-							case "是":
-								alert("啊哈，你还挺自信的哟，不过你说的对");
-                                flag = false;
-                                break;
-                            case "否":
-                                if (count !== 3) {
-                                    alert("你在想啥呢？当然是啊");
-                                    count++;
-                                } else {
-                                    alert("不和你玩了，你无药可救了");
-                                    flag = false;
-                                }
-                                break;
-                            default :
-                                alert("请输入 是 or 否 ");
-                                break;
+						if (count === 1) {
+							anwser = prompt('小余是不是最可爱的？')
+						} else if (count === 2) {
+							anwser = prompt('再问一遍，小余是不是最可爱的？')
+						} else {
+							anwser = prompt('最后问一遍，小余是不是最可爱的？')
 						}
+						switch (anwser) {
+							case null:
+								flag = false
+								break
+							case '是':
+								if (iswx) {
+									Chef.alert({
+										title: '',
+										content:
+											'啊哈，你还挺自信的哟，不过你说的对',
+										firm: '确定',
+									})
+								} else {
+									alert('啊哈，你还挺自信的哟，不过你说的对')
+								}
 
-						if (anwser === '是')
-							if (anwser === '是') {
-							} else if (anwser === '否') {
-								
-							} else {
-								alert('请输入 是 or 否 ')
-							}
+								// alert('啊哈，你还挺自信的哟，不过你说的对')
+								flag = false
+								break
+							case '否':
+								if (count !== 3) {
+									if (iswx) {
+										Chef.alert({
+											title: '',
+											content: '你在想啥呢？当然是啊',
+											firm: '确定',
+										})
+									} else {
+										alert('你在想啥呢？当然是啊')
+									}
+									// alert('你在想啥呢？当然是啊')
+									count++
+								} else {
+									alert('不和你玩了，你无药可救了')
+									flag = false
+								}
+								break
+							default:
+								if (iswx) {
+									Chef.alert({
+										title: '',
+										content: '请输入 是 or 否 ',
+										firm: '确定',
+									})
+								} else {
+									alert('请输入 是 or 否 ')
+								}
+								// alert('请输入 是 or 否 ')
+								break
+						}
 					}
 				})
 			}
+		</script>
+
+		<!--自定义ALERT-->
+		<script type="text/javascript">
+			var Chef = {
+				//body 的宽高
+				bodyH:
+					document.documentElement.clientHeight ||
+					document.body.clientHeight ||
+					window.innerHeight,
+				bodyW:
+					document.documentElement.clientWidth ||
+					document.body.clientWidth ||
+					window.innerWidth,
+				//动态创建 style 标签添加样式
+				cssStyle: function () {
+					var doc = document
+					var style = doc.createElement('style')
+					if (style.styleSheet) {
+						// IE
+						style.styleSheet.cssText = arguments[0]
+					} else {
+						// w3c
+						var cssText = doc.createTextNode(arguments[0])
+						style.appendChild(cssText)
+					}
+					var heads = doc.getElementsByTagName('head')
+					if (heads.length) {
+						heads[0].appendChild(style)
+					} else {
+						doc.documentElement.appendChild(style)
+					}
+				},
+				// 创建并显示遮罩层
+				createChef: function () {
+					if (
+						document.body.getElementsByClassName('Chef_opacity')
+							.length == 1
+					) {
+						document.body.removeChild(
+							document.body.getElementsByClassName(
+								'Chef_opacity'
+							)[0]
+						)
+					}
+					var div = this.create('div')
+					div.style.width = this.bodyW + 'px'
+					div.style.height = this.bodyH + 'px'
+					div.className = 'Chef_opacity'
+					document.body.appendChild(div)
+				},
+				//alert 框
+				alert: function () {
+					// 显示遮罩层
+					this.createChef()
+					// 创建
+					var alertDiv = this.create('div'),
+						alertH2 = this.create('h2'),
+						alertX = this.create('span'),
+						alertP = this.create('p'),
+						alertBDiv = this.create('div'),
+						alertFirm = this.create('button')
+					alertX.innerHTML = 'X'
+					alertX.className = 'Chef_X'
+					// 插号的click事件 什么都不做
+					alertX.onclick = function () {
+						alertFirm.onclick()
+					}
+					// 确定按钮的click事件 什么都不做
+					alertFirm.onclick = function () {
+						document.getElementsByClassName(
+							'Chef_opacity'
+						)[0].style.display = 'none'
+						document.body.removeChild(alertDiv)
+					}
+
+					//样式以及内容
+					alertDiv.className = 'Chef_alert'
+					if (arguments.length == 1) {
+						document.getElementsByClassName(
+							'Chef_opacity'
+						)[0].style.background =
+							'rgba(0,0,0,' + arguments[0].shade + ')'
+						alertDiv.style.top = arguments[0].offset
+						if (arguments[0].width == undefined) {
+							alertDiv.style.width = '4.6rem'
+						} else {
+							alertDiv.style.width = arguments[0].width
+							alertDiv.style.marginLeft =
+								'-' + parseInt(arguments[0].width) / 2 + 'px'
+						}
+						arguments[0].title == undefined
+							? (alertH2.innerHTML = '来自网页的信息')
+							: (alertH2.innerHTML = arguments[0].title)
+						arguments[0].content == undefined
+							? (alertP.innerHTML = '')
+							: (alertP.innerHTML = arguments[0].content)
+						arguments[0].firm == undefined
+							? (alertFirm.innerHTML = '确定')
+							: (alertFirm.innerHTML = arguments[0].firm)
+					} else {
+						// -- 默认提示信息
+						alertH2.innerHTML = '来自网页的信息'
+						alertFirm.innerHTML = '确定'
+					}
+					// 添加到页面
+					alertBDiv.appendChild(alertFirm)
+					// alertH2.appendChild(alertX);
+					alertDiv.appendChild(alertH2)
+					alertDiv.appendChild(alertP)
+					alertDiv.appendChild(alertBDiv)
+					document.body.appendChild(alertDiv)
+				},
+				//创建
+				create: function () {
+					return document.createElement(arguments[0])
+				},
+			}
+			;(function (Chef) {
+				var cssString =
+					'\
+                    *{padding:0;margin:0;}\
+                    .Chef_opacity{display:block;background:rgba(0,0,0,0.8);position:fixed;top:0;z-index:99;}\
+                    .Chef_alert{position:fixed;top:50%;left:50%;width:4.6rem;border-radius:.08rem;margin:-2rem 0 0 -2.3rem;background:white;z-index:100;text-align: center;font-size:.18rem}\
+                    .Chef_alert>h2{width:90%;margin:10px auto;margin-bottom:0;font-size:.24rem;}\
+                    .Chef_alert>p{width:100%;margin:0 auto;padding:.25rem 0;border-bottom:1px solid #d8d8d8;font-weight:700;}\
+                    .Chef_alert>div{height: .6rem; margin: .20rem auto;}\
+                    .Chef_alert>div>button{width:50%;height:100%;border:0;outline:0;font-size:.20rem;color:#e32742;background:none;}\
+                    .Chef_X{float:right;font-size:13px;color:grey;cursor:pointer;font-weight:normal;}\
+                    '
+				Chef.cssStyle(cssString)
+			})(Chef)
 		</script>
 	</body>
 </html>
