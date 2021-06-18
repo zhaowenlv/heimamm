@@ -8,11 +8,11 @@
 		<link rel="stylesheet" href="css/common.css" />
 		<link rel="stylesheet" href="css/swiper-bundle.min.css" />
 		<link rel="stylesheet" href="css/index.css" />
-		<title>黑马面面</title>
+		<title>一个测试题</title>
 	</head>
 	<body>
 		<!-- 头部部分 -->
-		<header class="header">黑马面面</header>
+		<header class="header">点击图片即可开始测试</header>
 		<!-- 导航栏部分 -->
 		<nav class="nav">
 			<a href="#">
@@ -42,7 +42,9 @@
 		</nav>
 		<!-- 每日练习go部分 -->
 		<div class="go">
-			<img src="images/go.png" alt="" />
+            <a href="#">
+                <img src="images/go.png" alt="" />
+            </a>
 		</div>
 		<!-- 我是分割线。。。 -->
 		<div class="split-div"></div>
@@ -76,7 +78,6 @@
 							</a>
 							<p>老师教你应对面试技巧</p>
 						</div>
-                        
 					</div>
 				</div>
 				<!-- Add Arrows -->
@@ -100,33 +101,33 @@
 				<div class="swiper-container study-swiper">
 					<div class="swiper-wrapper">
 						<div class="swiper-slide">
-                            <a href="#">
-                                <img src="images/pic1.png" alt="">
-                                <p>说地道英语，告别中式英语</p>
-                                <p><span>156</span>人学习</p>
-                            </a>
-                        </div>
+							<a href="#">
+								<img src="images/pic1.png" alt="" />
+								<p>说地道英语，告别中式英语</p>
+								<p><span>156</span>人学习</p>
+							</a>
+						</div>
 						<div class="swiper-slide">
-                            <a href="#">
-                                <img src="images/pic2.png" alt="">
-                                <p>说地道英语，告别中式英语</p>
-                                <p><span>156</span>人学习</p>
-                            </a>
-                        </div>
+							<a href="#">
+								<img src="images/pic2.png" alt="" />
+								<p>说地道英语，告别中式英语</p>
+								<p><span>156</span>人学习</p>
+							</a>
+						</div>
 						<div class="swiper-slide">
-                            <a href="#">
-                                <img src="images/pic1.png" alt="">
-                                <p>说地道英语，告别中式英语</p>
-                                <p><span>156</span>人学习</p>
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="#">
-                                <img src="images/pic2.png" alt="">
-                                <p>说地道英语，告别中式英语</p>
-                                <p><span>156</span>人学习</p>
-                            </a>
-                        </div>
+							<a href="#">
+								<img src="images/pic1.png" alt="" />
+								<p>说地道英语，告别中式英语</p>
+								<p><span>156</span>人学习</p>
+							</a>
+						</div>
+						<div class="swiper-slide">
+							<a href="#">
+								<img src="images/pic2.png" alt="" />
+								<p>说地道英语，告别中式英语</p>
+								<p><span>156</span>人学习</p>
+							</a>
+						</div>
 					</div>
 					<!-- Add Pagination -->
 					<div class="swiper-pagination"></div>
@@ -157,7 +158,7 @@
 		<!-- Initialize Swiper -->
 		<script>
 			// 视频的轮播图
-			(function () {
+			;(function () {
 				var swiper = new Swiper('.video-swiper', {
 					// 能够显示slider的个数
 					slidesPerView: 2,
@@ -171,14 +172,59 @@
 						prevEl: '.swiper-button-prev',
 					},
 				})
-			})();
+			})()
 			// 充电学习的轮播图
-			(function () {
+			;(function () {
 				var swiper = new Swiper('.study-swiper', {
 					slidesPerView: 2.3,
 					spaceBetween: 20,
 				})
-			})();
+			})()
+		</script>
+		<script>
+			var allA = document.getElementsByTagName('a')
+			for (i = 0; i < allA.length; i++) {
+				allA[i].addEventListener('click', function () {
+					var flag = true;
+                    var count = 1;
+                    var anwser;
+					while (flag) {
+                        if (count === 1) {
+                            anwser = prompt('小余是不是最可爱的？');
+                        } else if (count === 2) {
+                            anwser = prompt('再问一遍，小余是不是最可爱的？');
+                        } else {
+                            anwser = prompt('最后问一遍，小余是不是最可爱的？');
+                        }
+						switch (anwser) {
+							case "是":
+								alert("啊哈，你还挺自信的哟，不过你说的对");
+                                flag = false;
+                                break;
+                            case "否":
+                                if (count !== 3) {
+                                    alert("你在想啥呢？当然是啊");
+                                    count++;
+                                } else {
+                                    alert("不和你玩了，你无药可救了");
+                                    flag = false;
+                                }
+                                break;
+                            default :
+                                alert("请输入 是 or 否 ");
+                                break;
+						}
+
+						// if (anwser === '是')
+						// 	if (anwser === '是') {
+						// 	} else if (anwser === '否') {
+								
+						// 	} else {
+						// 		alert('请输入 是 or 否 ')
+						// 	}
+					}
+				})
+			}
 		</script>
 	</body>
 </html>
