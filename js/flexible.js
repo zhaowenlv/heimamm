@@ -15,6 +15,7 @@
 
   // set 1rem = viewWidth / 10
   function setRemUnit() {
+    // clientWidth代表设备可见区域宽度（物理宽度）
     var rem = docEl.clientWidth / 20
     docEl.style.fontSize = rem + 'px'
   }
